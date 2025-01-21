@@ -3,7 +3,6 @@ import 'package:prueba_emigdio/src/model/course.dart';
 import 'package:prueba_emigdio/src/model/mentoring.dart';
 import 'package:prueba_emigdio/src/remote/api/api_services.dart';
 import 'package:prueba_emigdio/src/resources/colors.dart';
-import 'package:prueba_emigdio/src/tools/responsive.dart';
 import 'package:prueba_emigdio/src/ui/feature/home/widgets/course_card.dart';
 import 'package:prueba_emigdio/src/ui/feature/home/widgets/mentoring_card.dart';
 import '../courses/course_detail_screen.dart';
