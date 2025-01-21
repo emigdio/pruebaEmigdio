@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:prueba_emigdio/src/model/course.dart';
 import 'package:prueba_emigdio/src/model/mentoring.dart';
 import 'package:prueba_emigdio/src/remote/api/api_services.dart';
+import 'package:prueba_emigdio/src/resources/colors.dart';
+import 'package:prueba_emigdio/src/tools/responsive.dart';
+import 'package:prueba_emigdio/src/ui/feature/home/widgets/course_card.dart';
+import 'package:prueba_emigdio/src/ui/feature/home/widgets/mentoring_card.dart';
 import '../courses/course_detail_screen.dart';
 import '../mentorings/mentoring_detail_screen.dart';
 
@@ -26,47 +30,32 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
+      appBar: AppBar(title: const Text('Test Emigdio',
+      style: TextStyle(
+        color: color1,
+        fontSize: 30,
+        fontWeight: FontWeight.bold,
+        shadows: <Shadow>[
+          Shadow(
+            offset: Offset(2.0, 2.0),
+            blurRadius: 3.0,
+            color: color3,
+          ),
+        ],
+      ),),
+      backgroundColor: color2,),
       body: SingleChildScrollView(
         child: Column(
           children: [
             SectionMentorings (
               title: 'Mentorías',
               futureData: mentorings,
-              itemBuilder: (context, mentoring) => Card(
-                child: ListTile(
-                  leading: Image.network(ApiService().getPathImage(mentoring.image), width: 50, height: 50),
-                  title: Text(mentoring.name),
-                  subtitle: Text(mentoring.description),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MentoringDetailScreen(mentoring: mentoring),
-                      ),
-                    );
-                  },
-                ),
-              ),
+              itemBuilder: (context, mentoring) => MentoringDetailScreen(mentoring: mentoring),
             ),
             SectionCourses(
               title: 'Cursos',
               futureData: courses,
-              itemBuilder: (context, course) => Card(
-                child: ListTile(
-                  leading: Image.network(ApiService().getPathImage(course.image), width: 50, height: 50),
-                  title: Text(course.name),
-                  subtitle: Text(course.description),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CourseDetailScreen(course: course),
-                      ),
-                    );
-                  },
-                ),
-              ),
+              itemBuilder: (context, course) => CourseDetailScreen(course: course),
             ),
           ],
         ),
@@ -91,6 +80,7 @@ class SectionMentorings extends StatelessWidget {
     return FutureBuilder<List<Mentoring>>(
       future: futureData,
       builder: (context, snapshot) {
+
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -103,14 +93,31 @@ class SectionMentorings extends StatelessWidget {
 
         return Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                title,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Container(
+              color: color1,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  title,
+                  style: const TextStyle(fontSize: 24, 
+                  fontWeight: FontWeight.bold,
+                  color: color2),
+                ),
               ),
             ),
-            ...items.map((item) => itemBuilder(context, item)),
+             Container(
+                padding: const EdgeInsets.all(8.0),
+                height: 300, // Altura fija para las tarjetas
+                child: ListView.builder(
+                scrollDirection: Axis.horizontal, // Dirección horizontal
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                final item = items[index];
+                return MentoringCard(item: item);
+             },
+          ),
+        )
           ],
         );
       },
@@ -146,14 +153,26 @@ class SectionCourses extends StatelessWidget {
 
         return Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              color: color1,
+              width: double.infinity,
               child: Text(
                 title,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 24, 
+                fontWeight: FontWeight.bold,
+                color: color2),
               ),
             ),
-            ...items.map((item) => itemBuilder(context, item)),
+            SizedBox(
+                height: 300, // Altura fija para las tarjetas
+                child: ListView.builder(
+                scrollDirection: Axis.horizontal, // Dirección horizontal
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                final item = items[index];
+                return CourseCard(item: item);
+             },))
           ],
         );
       },

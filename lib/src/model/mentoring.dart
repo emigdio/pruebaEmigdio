@@ -4,6 +4,7 @@ class Mentoring {
   final String image;
   final String name;
   final String detail;
+  final int price;
 
   Mentoring({
  
@@ -11,6 +12,7 @@ class Mentoring {
     required this.description,
     required this.image,
     required this.detail,
+    required this.price
 
   });
 
@@ -20,6 +22,7 @@ class Mentoring {
       description: json['description'],
       image: json['image'],
       detail: json['detail'],
+      price: json['price']
     );
   }
 }
